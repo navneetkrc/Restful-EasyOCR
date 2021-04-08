@@ -50,19 +50,23 @@ def recognition(image):
     :param image:
     :return:
     """
-    print("--inside recognition")
-    results = []
-    texts = reader.readtext(image)
-    print("==texts = ",str(texts))
-    for (bbox, text, prob) in texts:
-        output = {
-            #"coordinate": [list(map(float, coordinate)) for coordinate in bbox],
-            "text": text,
-            "score": prob
-        }
-        results.append(output)
-    print("==results = "+str(results))
-    return results
+    try:
+        print("--inside recognition")
+        results = []
+        texts = reader.readtext(image)
+        print("==texts = ",str(texts))
+        for (bbox, text, prob) in texts:
+            output = {
+                #"coordinate": [list(map(float, coordinate)) for coordinate in bbox],
+                "text": text,
+                "score": prob
+            }
+            results.append(output)
+        print("==results = "+str(results))
+        return results
+    except Exception as e:
+        print("image not processed by easy ocr - "+str(e))
+        return[{'text':'','score':''}]
 
 
 @app.route('/ocr', methods=['GET', 'POST'])
