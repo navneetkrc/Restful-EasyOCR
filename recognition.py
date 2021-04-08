@@ -5,7 +5,7 @@ import cv2
 import easyocr
 import os
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'easyocr_vdt');
+#SECRET_KEY = os.getenv('SECRET_KEY', 'easyocr_vdt');
 reader = easyocr.Reader(['en'], gpu=False)
 
 app = Flask(__name__)
@@ -31,9 +31,9 @@ def data_process(data):
     :return: params for image processing
     """
     image_url = data["image_url"]
-    secret_key = data["secret_key"]
+    #secret_key = data["secret_key"]
 
-    return url_to_image(image_url), secret_key
+    return url_to_image(image_url)     #, secret_key
 
 
 def recognition(image):
@@ -62,15 +62,10 @@ def process():
     :return: dict of width and points
     """
     data = request.get_json()
-    image, secret_key = data_process(data)
-    if secret_key == SECRET_KEY:
-        results = recognition(image)
+    image = data_process(data)
+    results = recognition(image)
         return {
             "results": results
         }
-    else:
-        abort(401)
-
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2000)
