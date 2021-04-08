@@ -4,6 +4,8 @@ import numpy as np
 import cv2
 import easyocr
 import os
+from flask import jsonify 
+
 
 #SECRET_KEY = os.getenv('SECRET_KEY', 'easyocr_vdt');
 reader = easyocr.Reader(['en'], gpu=False)
@@ -17,10 +19,14 @@ def url_to_image(url):
     :param url: url to the image
     :return: image in format of Opencv
     """
+    print("-------inside url to image--------")
     resp = urllib.request.urlopen(url)
+    print("-------resp in  url to image-------- ", str(resp))
+
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     print("url = ", url)
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    print("--iamge in url_to_image ",str(url_to_image))
     return image
 
 
@@ -30,10 +36,12 @@ def data_process(data):
     :param data: in json format
     :return: params for image processing
     """
+    print("--data process")
     image_url = data["image_url"]
+    print("--image url -- ",str(image_url))
     #secret_key = data["secret_key"]
 
-    return url_to_image(image_url)     #, secret_key
+    return url_to_image(image_url)#, secret_key
 
 
 def recognition(image):
@@ -42,8 +50,10 @@ def recognition(image):
     :param image:
     :return:
     """
+    print("--inside recognition")
     results = []
     texts = reader.readtext(image)
+    print("==texts = ",str(texts))
     for (bbox, text, prob) in texts:
         output = {
             "coordinate": [list(map(float, coordinate)) for coordinate in bbox],
@@ -51,7 +61,7 @@ def recognition(image):
             "score": prob
         }
         results.append(output)
-
+    print("==results = "+str(results))
     return results
 
 
@@ -61,11 +71,19 @@ def process():
     received request from client and process the image
     :return: dict of width and points
     """
+    print("--ocr endpoint--")
     data = request.get_json()
-    image = data_process(data)
+    print("--data : "+str(data))
+    image  = data_process(data)
+    print("--image : "+str(image))
+    # if secret_key == SECRET_KEY:
     results = recognition(image)
-        return {
-            "results": results
-        }
+    print("======RESULTS RECEIVED-------"+str(results))
+    return jsonify({"results": results})
+    # else:
+    #     abort(401)
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=2000)
+    print("--main-- received request")
+    app.run(debug=True,host='0.0.0.0', port=2000)
