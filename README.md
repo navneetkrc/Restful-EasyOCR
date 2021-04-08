@@ -11,7 +11,7 @@ The fastest way to run is using provided image at https://hub.docker.com/r/voduy
 ### Start Docker Container
 
 ```shell
-$ > docker run -d -i --name myeasyocr -p 2000:2000 -e SECRET_KEY=easyocr_vdt voduytuan/restful-easyocr
+$ > docker run -d -i --name myeasyocr -p 2000:2000 ocr_deploy:v1
 ```
 
 After starting container, please wait few seconds (about 30s) so that the detection model loaded. By default, this container will be accessed by port `2000`. 
