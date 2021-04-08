@@ -56,7 +56,7 @@ def recognition(image):
     print("==texts = ",str(texts))
     for (bbox, text, prob) in texts:
         output = {
-            "coordinate": [list(map(float, coordinate)) for coordinate in bbox],
+            #"coordinate": [list(map(float, coordinate)) for coordinate in bbox],
             "text": text,
             "score": prob
         }
