@@ -86,7 +86,7 @@ def process():
     results = recognition(image)
     print("======RESULTS RECEIVED-------"+str(results))
     #return jsonify({"results": results})
-    return(str(results))
+    return jsonify(results)
     # else:
     #     abort(401)
 
