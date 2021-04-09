@@ -44,7 +44,7 @@ def data_process(data):
     return url_to_image(image_url)#, secret_key
 
 
-def recognition(image):
+def recognition(image_url):
     """
 
     :param image:
@@ -53,8 +53,9 @@ def recognition(image):
     try:
         print("-inside recognition")
         results = []
-        data = []
-        texts = reader.readtext(image)
+        #data = []
+        texts = reader.readtext(image_url)
+        
         print("==texts = ",str(texts))
         for (bbox, text, prob) in texts:
             #output = {
@@ -80,11 +81,13 @@ def process():
     print("--ocr endpoint--")
     data = request.get_json()
     print("--data : "+str(data))
-    image  = data_process(data)
-    print("--image : "+str(image))
+    #image  = data_process(data)
+    #print("--image : "+str(image))
+    image_url = data["image"] 
+    print("--imageurl : "+str(image_url))
     # if secret_key == SECRET_KEY:
-    results = recognition(image)
-    print("======RESULTS RECEIVED-------"+str(results))
+    results = recognition(image_url)
+    print("======RESULTS RECEIVED-------")
     #return jsonify({"results": results})
     return jsonify(results)
     # else:
