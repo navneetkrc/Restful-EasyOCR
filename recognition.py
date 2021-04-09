@@ -37,7 +37,7 @@ def data_process(data):
     :return: params for image processing
     """
     print("--data process")
-    image_url = data["image_url"]
+    image_url = data["image"]
     print("--image url -- ",str(image_url))
     #secret_key = data["secret_key"]
 
@@ -51,17 +51,19 @@ def recognition(image):
     :return:
     """
     try:
-        print("--inside recognition")
+        print("-inside recognition")
         results = []
+        data = []
         texts = reader.readtext(image)
         print("==texts = ",str(texts))
         for (bbox, text, prob) in texts:
-            output = {
+            #output = {
                 #"coordinate": [list(map(float, coordinate)) for coordinate in bbox],
-                "text": text,
-                "score": prob
-            }
-            results.append(output)
+                #"text": data,
+                #"score": prob
+            #}
+            results.append(text)
+            #results.append(output)
         print("==results = "+str(results))
         return results
     except Exception as e:
