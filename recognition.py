@@ -85,7 +85,8 @@ def process():
     # if secret_key == SECRET_KEY:
     results = recognition(image)
     print("======RESULTS RECEIVED-------"+str(results))
-    return jsonify({"results": results})
+    #return jsonify({"results": results})
+    return(str(results))
     # else:
     #     abort(401)
 
