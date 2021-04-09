@@ -7,12 +7,11 @@ import os
 from flask import jsonify 
 
 
-#SECRET_KEY = os.getenv('SECRET_KEY', 'easyocr_vdt');
-reader = easyocr.Reader(['en'], gpu=False)
+reader = easyocr.Reader(['en','hi'], gpu=False)
 
 app = Flask(__name__)
 
-
+'''
 def url_to_image(url):
     """
     download the image, convert it to a NumPy array, and then read it into OpenCV format
@@ -28,8 +27,9 @@ def url_to_image(url):
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     print("--iamge in url_to_image ",str(url_to_image))
     return image
+    '''
 
-
+'''
 def data_process(data):
     """
     read params from the received data
@@ -41,8 +41,8 @@ def data_process(data):
     print("--image url -- ",str(image_url))
     #secret_key = data["secret_key"]
 
-    return url_to_image(image_url)#, secret_key
-
+    return image_url #url_to_image(image_url)#, secret_key
+    '''
 
 def recognition(image_url):
     """
@@ -69,7 +69,7 @@ def recognition(image_url):
         return results
     except Exception as e:
         print("image not processed by easy ocr - "+str(e))
-        return[{'text':'','score':''}]
+        return[{'text':'na','score':'na'}]
 
 
 @app.route('/ocr', methods=['GET', 'POST'])
@@ -78,9 +78,9 @@ def process():
     received request from client and process the image
     :return: dict of width and points
     """
-    print("--ocr endpoint--")
+    print("--process start inside OCR flask endpoint--")
     data = request.get_json()
-    print("--data : "+str(data))
+    #print("--data : "+str(data))
     #image  = data_process(data)
     #print("--image : "+str(image))
     image_url = data["image"] 
